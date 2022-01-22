@@ -1,0 +1,44 @@
+Question 3: Count records 
+
+select * from
+(select CAST(tpep_pickup_datetime AS DATE) as "day", count (*)
+from yellow_taxi_trips
+group by day) t
+where day='2021-01-15'
+
+***
+
+Question 4: Largest tip for each day 
+
+select CAST(tpep_pickup_datetime AS DATE) as "day", max(tip_amount)
+from yellow_taxi_trips
+group by 1
+order by 2 desc 
+limit 1
+
+***
+
+Question 5: Most popular destination
+
+select * from
+(SELECT 
+	CAST(tpep_pickup_datetime AS DATE) as "day",
+	CONCAT(zpu."Borough", ' / ', zpu."Zone") AS "pick_up_loc",
+	CONCAT(zdo."Borough", ' / ', zdo."Zone") AS "dropoff_loc",
+	COUNT(*)
+FROM
+	yellow_taxi_trips t JOIN zones zpu
+		ON t."PULocationID" = zpu."LocationID"
+	JOIN zones zdo
+		ON t."DOLocationID" = zdo."LocationID"
+GROUP BY 1, 2, 3
+ORDER BY 4 desc) t2
+WHERE pick_up_loc='Manhattan / Central Park' and day='2021-01-14'
+LIMIT 1
+
+***
+
+Question 6: Most expensive route 
+
+
+
