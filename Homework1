@@ -1,26 +1,26 @@
 Question 3: Count records 
 
-select * from
-(select CAST(tpep_pickup_datetime AS DATE) as "day", count (*)
-from yellow_taxi_trips
-group by day) t
-where day='2021-01-15'
+SELECT * from
+(SELECT CAST(tpep_pickup_datetime AS DATE) as "day", COUNT (*)
+FROM yellow_taxi_trips
+GROUP BY day) t
+WHERE day='2021-01-15'
 
 ***
 
 Question 4: Largest tip for each day 
 
-select CAST(tpep_pickup_datetime AS DATE) as "day", max(tip_amount)
-from yellow_taxi_trips
-group by 1
-order by 2 desc 
-limit 1
+SELECT CAST(tpep_pickup_datetime AS DATE) as "day", MAX(tip_amount)
+FROM yellow_taxi_trips
+GROUP BY 1
+ORDER BY 2 desc 
+LIMIT 1
 
 ***
 
 Question 5: Most popular destination
 
-select * from
+SELECT * FROM
 (SELECT 
 	CAST(tpep_pickup_datetime AS DATE) as "day",
 	CONCAT(zpu."Borough", ' / ', zpu."Zone") AS "pick_up_loc",
@@ -40,21 +40,24 @@ LIMIT 1
 
 Question 6: Most expensive route 
 
-Temp: before converting null to 'Unknown'
-
-select 
+SELECT 
 	t2."PU_DO",
-	avg(total_amount)
-from
-(SELECT
+	AVG(total_amount)
+FROM
+(SELECT 
 	CAST(tpep_pickup_datetime AS DATE) as "day",
  	CONCAT(zpu."Zone", ' / ', zdo."Zone") AS "PU_DO",
  	total_amount
-FROM
-	yellow_taxi_trips t JOIN zones zpu
-		ON t."PULocationID" = zpu."LocationID"
-	JOIN zones zdo
-		ON t."DOLocationID" = zdo."LocationID") t2
-group by t2."PU_DO"
-order by 2 desc
-
+FROM yellow_taxi_trips t JOIN 
+(SELECT 
+	zones."LocationID",
+	CASE when zones."Borough" is null then 'Unknown' else zones."Borough" end,
+	CASE when zones."Zone" is null then 'Unknown' else zones."Zone" end
+FROM zones) zpu ON t."PULocationID" = zpu."LocationID" JOIN
+(SELECT 
+	zones."LocationID",
+	CASE when zones."Borough" is null then 'Unknown' else zones."Borough" end,
+	CASE when zones."Zone" is null then 'Unknown' else zones."Zone" end
+from zones) zdo ON t."DOLocationID" = zdo."LocationID") t2
+GROUP BY t2."PU_DO"
+ORDER BY 2 desc;
