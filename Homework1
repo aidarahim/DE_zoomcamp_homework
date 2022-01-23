@@ -40,5 +40,21 @@ LIMIT 1
 
 Question 6: Most expensive route 
 
+Temp: before converting null to 'Unknown'
 
+select 
+	t2."PU_DO",
+	avg(total_amount)
+from
+(SELECT
+	CAST(tpep_pickup_datetime AS DATE) as "day",
+ 	CONCAT(zpu."Zone", ' / ', zdo."Zone") AS "PU_DO",
+ 	total_amount
+FROM
+	yellow_taxi_trips t JOIN zones zpu
+		ON t."PULocationID" = zpu."LocationID"
+	JOIN zones zdo
+		ON t."DOLocationID" = zdo."LocationID") t2
+group by t2."PU_DO"
+order by 2 desc
 
