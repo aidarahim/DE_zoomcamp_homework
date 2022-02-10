@@ -1,0 +1,24 @@
+# Q1
+
+CREATE OR REPLACE EXTERNAL TABLE `third-impact-338912.trips_data_all.external_table2`
+OPTIONS (
+  format = 'CSV',
+  uris = ['gs://transfer_service3/trip data/fhv_tripdata_2019-*.csv']
+);
+
+SELECT count(*) FROM `third-impact-338912.trips_data_all.external_table2`
+
+# Q2
+
+SELECT COUNT (DISTINCT dispatching_base_num) FROM `third-impact-338912.trips_data_all.external_table2`
+
+# Q4
+CREATE OR REPLACE TABLE third-impact-338912.trips_data_all.fhv_partitoned
+PARTITION BY
+  DATE(pickup_datetime) AS
+SELECT * FROM third-impact-338912.trips_data_all.external_table2;
+
+SELECT COUNT(*) 
+FROM `third-impact-338912.trips_data_all.fhv_partitoned`
+WHERE dropoff_datetime BETWEEN '2019-01-01' AND '2019-03-31' 
+AND dispatching_base_num IN ('B00987', 'B02060', 'B02279')
