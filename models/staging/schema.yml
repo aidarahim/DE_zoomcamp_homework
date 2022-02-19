@@ -11,6 +11,7 @@ sources:
       tables:
         - name: external_green_tripdata
         - name: external_yellow_tripdata
+        - name: external_table2
 
 # can add this 'models' section. not mandatory but good to do
 models:
