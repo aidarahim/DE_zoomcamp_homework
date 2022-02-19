@@ -1,5 +1,6 @@
 {{ config(materialized='view') }}
 
+-- just making some fake changes
 -- de-duplicate the data
 with tripdata as 
 (
