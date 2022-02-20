@@ -15,3 +15,5 @@ SELECT count(*) FROM `third-impact-338912.dbt_arahim.fact_fhv_trips`
 WHERE DATE(pickup_datetime) between '2019-01-01' and '2019-12-31'
 
 Question #5
+
+![fact_fhv_trips rides per month](fact_fhv_trips_by_month.png "rides per month")
