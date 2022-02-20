@@ -5,6 +5,8 @@ WHERE DATE(pickup_datetime) between '2019-01-01' and '2020-12-31'
 
 Question #2
 
+![fact_trips](fact_trips.png "fact trips table")
+
 Question #3
 
 SELECT count(*) FROM `third-impact-338912.dbt_arahim.stg_fhv_tripdata`
